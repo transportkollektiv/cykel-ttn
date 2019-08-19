@@ -1,2 +1,2 @@
 ttn==2.1.5
-requests=2.22.0
+requests==2.22.0

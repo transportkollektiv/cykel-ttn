@@ -5,9 +5,9 @@ import atexit
 import requests
 import os
 
-app_id = os.env['TTN_APP_ID']
-access_key = os.env['TTN_ACCESS_KEY']
-endpoint = os.env['ENDPOINT']
+app_id = os.environ['TTN_APP_ID']
+access_key = os.environ['TTN_ACCESS_KEY']
+endpoint = os.environ['ENDPOINT']
 
 def uplink_callback(msg, client):
 	try:

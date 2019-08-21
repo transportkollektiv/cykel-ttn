@@ -11,6 +11,7 @@ app_id = os.environ['TTN_APP_ID']
 access_key = os.environ['TTN_ACCESS_KEY']
 endpoint = os.environ['ENDPOINT']
 port = int(os.getenv('PORT', 8080))
+host = os.getenv('HOST', '')
 
 gauge = Gauge('bike_battery_volts', 'bike battery voltage', ['bike_number'])
 
@@ -44,7 +45,10 @@ atexit.register(close_mqtt)
 mqtt_client.set_uplink_callback(uplink_callback)
 mqtt_client.connect()
 
-start_http_server(port)
+start_http_server(port, addr=host)
+
+print('starting cykel-ttn')
+print('serving metrics on %s:%s' % (host, port))
 
 try:
 	while 1:

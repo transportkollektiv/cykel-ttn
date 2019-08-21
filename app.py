@@ -18,7 +18,8 @@ def uplink_callback(msg, client):
 		update = {
 			'bike_number': bike_number,
 			'lat': data.latitude,
-			'lng': data.longitude
+			'lng': data.longitude,
+			'battery_voltage': data.vbat
 		}
 		resp = requests.post(endpoint, data=update)
 		print(resp)

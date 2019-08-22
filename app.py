@@ -13,7 +13,8 @@ endpoint = os.environ['ENDPOINT']
 port = int(os.getenv('PORT', 8080))
 host = os.getenv('HOST', '')
 
-gauge = Gauge('bike_battery_volts', 'bike battery voltage', ['bike_number'])
+voltgauge = Gauge('bike_battery_volts', 'bike battery voltage', ['bike_number'])
+timegauge = Gauge('bike_last_data_update', 'bike last data timestamp', ['bike_number'])
 
 def uplink_callback(msg, client):
 	try:
@@ -29,7 +30,8 @@ def uplink_callback(msg, client):
 		}
 		resp = requests.post(endpoint, data=update)
 		print(resp)
-		gauge.labels(bike_number=bike_number).set(data.vbat)
+		voltgauge.labels(bike_number=bike_number).set(data.vbat)
+		timegauge.labels(bike_number=bike_number).set(int(time.time()))
 	except e:
 		print(e)
 

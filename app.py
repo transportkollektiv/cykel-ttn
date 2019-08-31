@@ -15,6 +15,7 @@ host = os.getenv('HOST', '')
 
 voltgauge = Gauge('bike_battery_volts', 'bike battery voltage', ['bike_number'])
 timegauge = Gauge('bike_last_data_update', 'bike last data timestamp', ['bike_number'])
+packgauge = Gauge('ttn_last_package_received', 'last ttn package received timestamp')
 
 def uplink_callback(msg, client):
 	try:
@@ -32,6 +33,7 @@ def uplink_callback(msg, client):
 		print(resp)
 		voltgauge.labels(bike_number=bike_number).set(data.vbat)
 		timegauge.labels(bike_number=bike_number).set(int(time.time()))
+		packgauge.set(int(time.time()))
 	except e:
 		print(e)
 

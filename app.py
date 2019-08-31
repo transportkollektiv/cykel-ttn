@@ -37,6 +37,13 @@ def uplink_callback(msg, client):
 	except e:
 		print(e)
 
+def connect_callback(res, client):
+	if not res:
+		print('connection to ttn mqtt failed')
+		client.close()
+		sys.exit(1)
+	else:
+		print('connected to ttn')
 
 handler = ttn.HandlerClient(app_id, access_key)
 mqtt_client = handler.data()
@@ -46,12 +53,12 @@ def close_mqtt():
 
 atexit.register(close_mqtt)
 
+mqtt_client.set_connect_callback(connect_callback)
 mqtt_client.set_uplink_callback(uplink_callback)
-mqtt_client.connect()
-
-start_http_server(port, addr=host)
 
 print('starting cykel-ttn')
+mqtt_client.connect()
+start_http_server(port, addr=host)
 print('serving metrics on %s:%s' % (host, port))
 
 try:

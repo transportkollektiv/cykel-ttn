@@ -10,12 +10,19 @@ from prometheus_client import Gauge, start_http_server
 app_id = os.environ['TTN_APP_ID']
 access_key = os.environ['TTN_ACCESS_KEY']
 endpoint = os.environ['ENDPOINT']
+auth_header = os.getenv('ENDPOINT_AUTH_HEADER', '')
 port = int(os.getenv('PORT', 8080))
 host = os.getenv('HOST', '')
 
 voltgauge = Gauge('bike_battery_volts', 'bike battery voltage', ['bike_number'])
 timegauge = Gauge('bike_last_data_update', 'bike last data timestamp', ['bike_number'])
 packgauge = Gauge('ttn_last_package_received', 'last ttn package received timestamp')
+
+headers = {}
+if auth_header is not '':
+	headers = {
+		'Authorization': auth_header
+	}
 
 def uplink_callback(msg, client):
 	try:
@@ -29,7 +36,7 @@ def uplink_callback(msg, client):
 			'lng': data.longitude,
 			'battery_voltage': data.vbat
 		}
-		resp = requests.post(endpoint, data=update)
+		resp = requests.post(endpoint, headers=headers, data=update)
 		print(resp)
 		voltgauge.labels(bike_number=bike_number).set(data.vbat)
 		timegauge.labels(bike_number=bike_number).set(int(time.time()))

@@ -34,7 +34,7 @@ def uplink_callback(msg, client):
 			'lat': data.latitude,
 			'lng': data.longitude
 		}
-		if data.vbat:
+		if hasattr(data, 'vbat'):
 			update['battery_voltage'] = data.vbat
 		resp = requests.post(endpoint, headers=headers, data=update)
 		print(resp)

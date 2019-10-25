@@ -28,17 +28,19 @@ def uplink_callback(msg, client):
 	try:
 		print("Received uplink from ", msg.dev_id)
 		print(msg)
-		bike_number = msg.dev_id.replace("tbeam-cccamp-", "")
 		data = msg.payload_fields
 		update = {
-			'bike_number': bike_number,
+			'device_id': msg.dev_id,
 			'lat': data.latitude,
-			'lng': data.longitude,
-			'battery_voltage': data.vbat
+			'lng': data.longitude
 		}
+		if data.vbat:
+			print ("ist da");
+			update['battery_voltage'] = data.vbat
 		resp = requests.post(endpoint, headers=headers, data=update)
 		print(resp)
-		voltgauge.labels(bike_number=bike_number).set(data.vbat)
+		if data.vbat:
+			voltgauge.labels(bike_number=bike_number).set(data.vbat)
 		timegauge.labels(bike_number=bike_number).set(int(time.time()))
 		packgauge.set(int(time.time()))
 	except e:

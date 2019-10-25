@@ -14,8 +14,8 @@ auth_header = os.getenv('ENDPOINT_AUTH_HEADER', '')
 port = int(os.getenv('PORT', 8080))
 host = os.getenv('HOST', '')
 
-voltgauge = Gauge('bike_battery_volts', 'bike battery voltage', ['bike_number'])
-timegauge = Gauge('bike_last_data_update', 'bike last data timestamp', ['bike_number'])
+voltgauge = Gauge('tracker_battery_volts', 'tracker battery voltage', ['device_id'])
+timegauge = Gauge('tracker_last_data_update', 'tracker last data timestamp', ['device_id'])
 packgauge = Gauge('ttn_last_package_received', 'last ttn package received timestamp')
 
 headers = {}
@@ -35,13 +35,12 @@ def uplink_callback(msg, client):
 			'lng': data.longitude
 		}
 		if data.vbat:
-			print ("ist da");
 			update['battery_voltage'] = data.vbat
 		resp = requests.post(endpoint, headers=headers, data=update)
 		print(resp)
 		if data.vbat:
-			voltgauge.labels(bike_number=bike_number).set(data.vbat)
-		timegauge.labels(bike_number=bike_number).set(int(time.time()))
+			voltgauge.labels(device_id=msg.dev_id).set(data.vbat)
+		timegauge.labels(device_id=msg.dev_id).set(int(time.time()))
 		packgauge.set(int(time.time()))
 	except e:
 		print(e)

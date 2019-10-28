@@ -1,5 +1,5 @@
 # cykel-ttn
-A The Things Network adapter for sending bike positions to [cykel](https://github.com/stadtulm/cykel).
+A The Things Network adapter for sending bike positions to [cykel](https://github.com/stadtulm/cykel). This is the adapter for GPS based trackers. For wifi based trackers use [cykel-ttn-wifi](https://github.com/stadtulm/cykel-ttn-wifi).
 
 ## Prerequisites
 

@@ -13,9 +13,14 @@ endpoint = os.environ['ENDPOINT']
 auth_header = os.getenv('ENDPOINT_AUTH_HEADER', '')
 port = int(os.getenv('PORT', 8080))
 host = os.getenv('HOST', '')
+labels = os.getenv('LABELS', None)
 
-voltgauge = Gauge('tracker_battery_volts', 'tracker battery voltage', ['device_id'])
-timegauge = Gauge('tracker_last_data_update', 'tracker last data timestamp', ['device_id'])
+promlabels = {}
+if labels is not None:
+	promlabels = dict(s.split('=') for s in labels.split(','))
+
+voltgauge = Gauge('tracker_battery_volts', 'tracker battery voltage', ['device_id'] + list(promlabels.keys()))
+timegauge = Gauge('tracker_last_data_update', 'tracker last data timestamp', ['device_id'] + list(promlabels.keys()))
 packgauge = Gauge('ttn_last_package_received', 'last ttn package received timestamp')
 
 headers = {}
@@ -26,7 +31,7 @@ if auth_header is not '':
 
 def uplink_callback(msg, client):
 	try:
-		print("Received uplink from ", msg.dev_id)
+		print("Received uplink from %s" % (msg.dev_id))
 		print(msg)
 		data = msg.payload_fields
 		update = {
@@ -38,9 +43,10 @@ def uplink_callback(msg, client):
 			update['battery_voltage'] = data.vbat
 		resp = requests.post(endpoint, headers=headers, data=update)
 		print(resp)
+		lbl = { 'device_id': msg.dev_id, **promlabels }
 		if data.vbat:
-			voltgauge.labels(device_id=msg.dev_id).set(data.vbat)
-		timegauge.labels(device_id=msg.dev_id).set(int(time.time()))
+			voltgauge.labels(**lbl).set(data.vbat)
+		timegauge.labels(**lbl).set(int(time.time()))
 		packgauge.set(int(time.time()))
 	except e:
 		print(e)

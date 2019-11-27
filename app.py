@@ -35,12 +35,13 @@ def uplink_callback(msg, client):
 		print(msg)
 		data = msg.payload_fields
 		update = {
-			'device_id': msg.dev_id,
-			'lat': data.latitude,
-			'lng': data.longitude
+			'device_id': msg.dev_id
 		}
 		if hasattr(data, 'vbat'):
 			update['battery_voltage'] = data.vbat
+		if hasattr(data, 'latitude') and hasattr(data, 'longitude'):
+			update['lat'] = data.latitude
+			update['lng'] = data.longitude
 		resp = requests.post(endpoint, headers=headers, data=update)
 		print(resp)
 		lbl = { 'device_id': msg.dev_id, **promlabels }

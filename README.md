@@ -10,7 +10,7 @@ A The Things Network adapter for sending bike positions to [cykel](https://githu
 Install the required packages using `pip install -r requirements.txt`. It is recommended to use a virtualenv with your choice of tool, e.g. `pipenv`, in which case you can run `pipenv install` (and `pipenv shell` or prefix `pipenv run` to run commands).
 
 ## Decoder
-To use the cykel-ttn adapter you need to bring the incoming bytes from your lora device into a readable format. The TTN Console supports decoders/converters and validators for this use case. Look into the `ttn-decoder` directory to find javascript, which you can use as decoder function.
+To use the cykel-ttn adapter you need to bring the incoming bytes from your lora device into a readable format. The TTN Console supports decoders/converters and validators for this use case. Look into the [tracker-ttn-decoders](https://github.com/stadtulm/tracker-ttn-decoders) repository to find javascript, which you can use as decoder function.
 
 Visit `https://console.thethingsnetwork.org/applications/<application-id>/payload-formats` to set the *Payload Format* to *Custom* and enter the decoder function there.
 

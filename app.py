@@ -32,7 +32,7 @@ timegauge = Gauge(
 packgauge = Gauge("ttn_last_package_received", "last ttn package received timestamp")
 
 headers = {}
-if auth_header is not "":
+if auth_header != "":
     headers = {"Authorization": auth_header}
 
 
@@ -54,7 +54,7 @@ def uplink_callback(msg, client):
             voltgauge.labels(**lbl).set(data.vbat)
         timegauge.labels(**lbl).set(int(time.time()))
         packgauge.set(int(time.time()))
-    except e:
+    except Exception as e:
         print(e)
 
 

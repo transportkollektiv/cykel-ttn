@@ -65,7 +65,7 @@ def uplink_callback(msg):
 def on_connect(client, userdata, flags, rc):
     if rc > 0:
         print("connection to ttn mqtt failed")
-        client.close()
+        client.disconnect()
         sys.exit(1)
 
     print("connected to ttn")

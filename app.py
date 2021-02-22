@@ -3,7 +3,6 @@ import json
 import os
 import sys
 import time
-from collections import namedtuple
 
 import paho.mqtt.client as mqtt
 import requests

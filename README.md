@@ -1,5 +1,5 @@
 # cykel-ttn
-A The Things Network adapter for sending bike positions to [cykel](https://github.com/stadtulm/cykel). This is the adapter for GPS based trackers. For wifi based trackers use [cykel-ttn-wifi](https://github.com/stadtulm/cykel-ttn-wifi).
+A The Things Network adapter for sending bike positions to [cykel](https://github.com/transportkollektiv/cykel). This is the adapter for GPS based trackers. For wifi based trackers use [cykel-ttn-wifi](https://github.com/transportkollektiv/cykel-ttn-wifi).
 
 This adapter is now only compatible with the TheThingsNetwork v3 Stack.
 
@@ -12,7 +12,7 @@ This adapter is now only compatible with the TheThingsNetwork v3 Stack.
 Install the required packages using `pip install -r requirements.txt`. It is recommended to use a virtualenv with your choice of tool, e.g. `pipenv`, in which case you can run `pipenv install` (and `pipenv shell` or prefix `pipenv run` to run commands).
 
 ## Decoder
-To use the cykel-ttn adapter you need to bring the incoming bytes from your lora device into a readable format. The TTN Console supports decoders/converters and validators for this use case. Look into the [tracker-ttn-decoders](https://github.com/stadtulm/tracker-ttn-decoders) repository to find javascript, which you can use as decoder function.
+To use the cykel-ttn adapter you need to bring the incoming bytes from your lora device into a readable format. The TTN Console supports decoders/converters and validators for this use case. Look into the [tracker-ttn-decoders](https://github.com/transportkollektiv/tracker-ttn-decoders) repository to find javascript, which you can use as decoder function.
 
 Visit `https://eu1.cloud.thethings.network/console/applications/<application id>/payload-formatters/uplink` to set the *Payload Format* for *Uplink* to *Javascript* and enter the decoder function there.
 

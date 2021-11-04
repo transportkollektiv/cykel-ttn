@@ -19,7 +19,7 @@ jobs:
         id: meta
         uses: docker/metadata-action@v3
         with:
-          images: stadtulm/cykel-ttn
+          images: transportkollektiv/cykel-ttn
           tags: |
             type=sha,prefix=,format=short
           flavor: |
